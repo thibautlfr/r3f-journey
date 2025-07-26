@@ -1,34 +1,25 @@
-import {
-  Environment,
-  OrbitControls,
-  OrthographicCamera,
-} from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { City } from "./components/City";
+
+const Box = () => {
+  return (
+    <mesh>
+      <boxGeometry />
+      <meshBasicMaterial
+        color="white"
+        transparent
+        opacity={0}
+      />
+    </mesh>
+  );
+};
 
 function App() {
   return (
-    <Canvas>
-      <OrthographicCamera
-        position={[1, 1, 1]}
-        makeDefault
-        top={2}
-        bottom={-2}
-        left={
-          -2 *
-          (window.innerWidth / window.innerHeight)
-        }
-        right={
-          2 *
-          (window.innerWidth / window.innerHeight)
-        }
-        near={-5}
-      />
-      <OrbitControls />
-      {/* IGNORE FOR NOW */}
-      <City />
-      <Environment preset="city" />
-    </Canvas>
+    <>
+      <Canvas camera={{ position: [3, 3, 3] }}>
+        <Box />
+      </Canvas>
+    </>
   );
 }
 
