@@ -1,5 +1,6 @@
 import {
   OrbitControls,
+  SpotLight,
   useHelper,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -11,26 +12,33 @@ const Lights = () => {
   const ref = useRef();
   const helper = useHelper(
     ref,
-    THREE.PointLightHelper,
-    0.5,
+    THREE.SpotLightHelper,
     "red"
   );
-  const { color, distance, decay, intensity } =
-    useControls({
-      color: "#ff0000",
-      distance: 3,
-      decay: 2,
-      intensity: 0.5,
-    });
+
+  const {
+    color,
+    distance,
+    attenuation,
+    angle,
+    anglePower,
+  } = useControls({
+    color: "#876ae5",
+    distance: 6,
+    attenuation: 2.2,
+    angle: 1,
+    anglePower: 1,
+  });
 
   return (
-    <pointLight
+    <SpotLight
       ref={ref}
-      position={[1, 1, 1]}
-      intensity={intensity}
-      distance={distance}
-      decay={decay}
       color={color}
+      distance={distance}
+      angle={angle}
+      penumbra={0.1}
+      attenuation={attenuation}
+      anglePower={anglePower}
     />
   );
 };
@@ -61,7 +69,11 @@ function App() {
 
         <mesh rotation-y={Math.PI / 4}>
           <boxGeometry />
-          <meshStandardMaterial color="white" />
+          <meshStandardMaterial
+            color="white"
+            roughness={1}
+            metalness={0}
+          />
         </mesh>
 
         <mesh
@@ -69,7 +81,16 @@ function App() {
           position-y={-0.5}
         >
           <planeGeometry args={[5, 5]} />
-          <meshStandardMaterial color="white" />
+          {/* <meshStandardMaterial
+            color="white"
+            roughness={0.2}
+            metalness={0.8}
+          /> */}
+          <meshPhysicalMaterial
+            color="white"
+            clearcoat={0.5}
+            reflectivity={0.8}
+          />
         </mesh>
       </Canvas>
     </>
