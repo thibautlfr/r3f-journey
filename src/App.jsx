@@ -9,12 +9,31 @@ import {
   useRef,
   useState,
 } from "react";
+import {
+  ThemeProvider,
+  useTheme,
+} from "./hooks/useTheme";
+
+const UI = () => {
+  const { setColor } = useTheme();
+
+  useControls({
+    changeColorToRed: button(() =>
+      setColor("red")
+    ),
+    changeColorToGreen: button(() =>
+      setColor("green")
+    ),
+    changeColorToBlue: button(() =>
+      setColor("blue")
+    ),
+  });
+};
 
 const Cube = memo((props) => {
   console.log("Cube rendered");
 
-  // Avoid useState as possible because it will cause the component to re-render
-  const [color, setColor] = useState("white");
+  const { color } = useTheme();
 
   const material = useMemo(
     () => <meshStandardMaterial color={color} />,
@@ -84,23 +103,29 @@ function App() {
 
   return (
     <>
-      <Canvas
-        camera={{ position: [0, 2, 6], fov: 42 }}
-      >
-        <OrbitControls />
-        <Cube
-          onClick={onCubeClicked}
-          rotation-y={Math.PI / 4}
-        />
-        <ContactShadows
-          position-y={-2}
-          opacity={0.5}
-          blur={2}
-          color={"pink"}
-          scale={10}
-        />
-        <Environment preset="city" />
-      </Canvas>
+      <ThemeProvider>
+        <UI />
+        <Canvas
+          camera={{
+            position: [0, 2, 6],
+            fov: 42,
+          }}
+        >
+          <OrbitControls />
+          <Cube
+            onClick={onCubeClicked}
+            rotation-y={Math.PI / 4}
+          />
+          <ContactShadows
+            position-y={-2}
+            opacity={0.5}
+            blur={2}
+            color={"pink"}
+            scale={10}
+          />
+          <Environment preset="city" />
+        </Canvas>
+      </ThemeProvider>
     </>
   );
 }
