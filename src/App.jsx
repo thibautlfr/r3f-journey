@@ -1,9 +1,48 @@
 import { ContactShadows, Environment, OrbitControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
+import { button, useControls } from "leva";
+import { useRef } from "react";
 
 const Cube = (props) => {
+  const camera = useThree(
+    (state) => state.camera
+  );
+
+  const updateFov = (fov) => {
+    camera.fov = fov;
+    camera.updateProjectionMatrix();
+  };
+
+  useControls("FOV", {
+    smallFov: button(() => updateFov(20)),
+    normalFov: button(() => updateFov(42)),
+    bigFov: button(() => updateFov(60)),
+    hugeFov: button(() => updateFov(110)),
+  });
+
+  const cubeRef = useRef();
+
+  const { speed } = useControls("SPEED", {
+    speed: {
+      value: 0,
+      min: -12,
+      max: 12,
+    },
+  });
+
+  // x calls based on the frame rate (60fps = 60 calls per second)
+  // avoid using setState and instancation
+  // useFrame for reusue and update variables
+  useFrame((state, delta) => {
+    cubeRef.current.rotation.y += speed * delta;
+  });
+
   return (
-    <mesh {...props}>
+    <mesh {...props} ref={cubeRef}>
       <boxGeometry />
       <meshStandardMaterial color={"white"} />
     </mesh>
