@@ -4,10 +4,11 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@react-three/recommended",
   ],
-  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
+  parser: "@typescript-eslint/parser",
   settings: { react: { version: "18.2" } },
   plugins: ["react-refresh"],
   rules: {
