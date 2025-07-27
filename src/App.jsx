@@ -4,9 +4,26 @@ import { Lighthouse } from "./components/Lighthouse";
 function App() {
   return (
     <>
-      <Canvas camera={{ position: [-1.5, 3, 10], fov: 42 }}>
-        <OrbitControls />
-        <Lighthouse position-y={-1} scale={[0.2, 0.2, 0.2]} />
+      <Canvas
+        camera={{
+          position: [-1.5, 3, 10],
+          fov: 42,
+        }}
+      >
+        <OrbitControls
+          enablePan={false}
+          maxPolarAngle={Math.PI / 2}
+          minAzimuthAngle={-Math.PI / 2}
+          maxAzimuthAngle={Math.PI / 2}
+          minDistance={3}
+          maxDistance={10}
+          // rotateSpeed={0.5}
+          // enableZoom={false}
+        />
+        <Lighthouse
+          position-y={-1}
+          scale={[0.2, 0.2, 0.2]}
+        />
         <Environment preset="sunset" />
       </Canvas>
     </>
